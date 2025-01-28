@@ -33,7 +33,7 @@ apiVersion: v1
 metadata:
    name: pgp-kubeserve-svc
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 8080
       targetPort: 8080
