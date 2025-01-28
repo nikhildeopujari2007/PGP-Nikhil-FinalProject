@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
        - name: app
-         image:  nikhildeopujari2007/pgp-kubedockerimage
+         image: nikhildeopujari2007/pgp-kubedockerimage
    
 ---
 kind: Service
