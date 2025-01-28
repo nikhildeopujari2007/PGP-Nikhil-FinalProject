@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
        - name: app
-         image: nikhildeopujari2007/pgp-kubedockerimage:4
+         image: nikhildeopujari2007/pgp-kubedockerimage:6
          ports:
            - containerPort: 8080
          env:
