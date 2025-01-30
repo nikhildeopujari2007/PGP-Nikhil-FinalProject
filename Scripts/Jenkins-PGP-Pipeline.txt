@@ -1,0 +1,30 @@
+pipeline{
+	
+	agent any
+	
+	tools{
+    	maven 'mymaven'
+	}
+	
+	stages{
+    	stage('Clone Repo')
+    	{
+        	steps{
+            	git 'https://github.com/nikhildeopujari2007/PGP-Nikhil-FinalProject.git'
+        	}
+    	}
+    	stage('Test Code')
+    	{
+        	steps{
+            	sh 'mvn test'
+        	}
+    	}
+    	
+    	stage('Build Code')
+    	{
+        	steps{
+            	sh 'mvn clean install package'
+        	}
+    	} 	
+	}
+}

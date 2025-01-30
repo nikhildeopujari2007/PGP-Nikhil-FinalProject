@@ -1,0 +1,56 @@
+pipeline{
+	
+	agent any
+	
+	tools{
+    	maven 'mymaven'
+	}
+	
+	stages{
+    	stage('Clone Repo')
+    	{
+        	steps{
+            	git 'https://github.com/nikhildeopujari2007/PGP-Nikhil-FinalProject.git'
+        	}
+    	}
+    	stage('Test Code')
+    	{
+        	steps{
+            	sh 'mvn test'
+        	}
+    	}
+    	
+    	stage('Build Code')
+    	{
+        	steps{
+            	sh 'mvn clean install package'
+        	}
+    	}
+    	
+    	stage('Build Image')
+    	{
+        	steps{
+            	sh 'docker build -t pgp-project1:$BUILD_NUMBER .'
+        	}
+    	}
+    	
+    	stage('Deploy Image') 
+    	{
+            steps{
+                script 
+                {
+                    // Use Jenkins credentials for Docker Hub login
+                    withCredentials([usernamePassword(credentialsId: 'DockerHub-Credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) 
+					{
+                        sh "sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+					   // Push the image
+                        sh 'sudo docker tag pgp-project1:$BUILD_NUMBER $DOCKER_USERNAME/pgp-project1:$BUILD_NUMBER'
+                        sh 'sudo docker push $DOCKER_USERNAME/pgp-project1:$BUILD_NUMBER'
+					}
+                }
+            }
+        }
+    	
+    	
+	}
+}
