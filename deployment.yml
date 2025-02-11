@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: pgp-kubeserve
+spec:
+  replicas: 3
+  minReadySeconds: 10 # wait for 45 sec before going to deploy next pod
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1  
+      maxSurge: 1        # max number of pods to run for the deployment
+  selector:
+    matchLabels:
+      app: pgp-kubeserve
+  template:
+    metadata:
+      name: pgp-kubeserve
+      labels:
+        app: pgp-kubeserve
+    spec:
+      containers:
+        - name: app
+          image: nikhildeopujari2007/pgp-kubedockerimage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgp-kubeserve-svc
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: pgp-kubeserve
